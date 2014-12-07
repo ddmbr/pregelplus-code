@@ -97,7 +97,7 @@ public:
         //PrintTimer("Reduce Time",4);
     };
 
-    void active_compute()
+    void active_compute(string command)
     {
         active_count = 0;
         MessageBufT* mbuf = (MessageBufT*)get_message_buffer();
@@ -116,7 +116,10 @@ public:
                 }
             } else {
                 vertexes[i]->activate();
-                vertexes[i]->compute(v_msgbufs[i]);
+                if(command == "")
+                    vertexes[i]->compute(v_msgbufs[i]);
+                else
+                    vertexes[i]->compute(v_msgbufs[i], command);
                 v_msgbufs[i].clear(); //clear used msgs
 
                 AggregatorT* agg = (AggregatorT*)get_aggregator();
@@ -137,7 +140,7 @@ public:
         }
     }
 
-    void all_compute()
+    void all_compute(string command)
     {
         active_count = 0;
         MessageBufT* mbuf = (MessageBufT*)get_message_buffer();
@@ -145,7 +148,10 @@ public:
 
         for (int i = 0; i < vertexes.size(); i++) {
             vertexes[i]->activate();
-            vertexes[i]->compute(v_msgbufs[i]);
+            if(command == "")
+                vertexes[i]->compute(v_msgbufs[i]);
+            else
+                vertexes[i]->compute(v_msgbufs[i], command);
             v_msgbufs[i].clear(); //clear used msgs
 
             AggregatorT* agg = (AggregatorT*)get_aggregator();
@@ -374,7 +380,7 @@ public:
         return 0;
     }
 
-    void compute(int num_phases = 1)
+    void compute(int num_phases=1, string command="")
     {
         init_timers();
         ResetTimer(WORKER_TIMER);
@@ -430,9 +436,9 @@ public:
                 // clear Bits and compute
                 clearBits();
                 if (wakeAll == 1)
-                    all_compute();
+                    all_compute(command);
                 else
-                    active_compute();
+                    active_compute(command);
                 // Messages combine
                 message_buffer->combine();
 
