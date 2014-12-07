@@ -49,7 +49,12 @@ public:
         return m;
     }
 
-    virtual void compute(MessageContainer& messages) = 0;
+    virtual void compute(MessageContainer& messages) {
+        throw std::exception("Unimplemented function!");
+    }
+    virtual void compute(MessageContainer& messages, string command) {
+        throw std::exception("Unimplemented function!");
+    }
     inline ValueT& value()
     {
         return _value;
