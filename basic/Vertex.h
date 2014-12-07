@@ -2,9 +2,11 @@
 #define VERTEX_H
 
 #include "utils/global.h"
-#include <vector>
 #include "utils/serialization.h"
 #include "MessageBuffer.h"
+#include <vector>
+#include <exception>
+#include <stdexcept>
 using namespace std;
 
 //Default Hash Function =====================
@@ -50,10 +52,10 @@ public:
     }
 
     virtual void compute(MessageContainer& messages) {
-        throw std::exception("Unimplemented function!");
+        throw std::runtime_error("Unimplemented function!");
     }
     virtual void compute(MessageContainer& messages, string command) {
-        throw std::exception("Unimplemented function!");
+        throw std::runtime_error("Unimplemented function!");
     }
     inline ValueT& value()
     {
